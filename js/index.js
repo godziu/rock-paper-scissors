@@ -7,6 +7,7 @@ var reset = document.getElementById('reset-scores');
 var gameResult = document.getElementById('gameResult');
 var limit;
 
+
 // funkcja generujaca losowa liczbę oznaczajaca ruch komputera
 function generateRandomNumber() {
   return Math.floor((Math.random() * (3 - 1 + 1)) + 1);
@@ -105,6 +106,18 @@ function disableButtons(flag,bgColor){
   document.getElementById("scissors").style.backgroundColor = bgColor;
 }
 
+
+var btnPlayerMove = document.querySelectorAll('.player-move'); // ustalam zmienną dla wszystkich elementów, które mają klasę "player-move"
+
+for (var i = 0; i < btnPlayerMove.length; i++) {
+  var dataMove = btnPlayerMove[i].getAttribute('data-move'); // tworzę pętlę, która wyciąga z przeszukanych elementów atrybut "data-move"
+  
+  btnPlayerMove[i].addEventListener('click', function() { // funkcja z argumentem "dataMove"
+    playerMove(dataMove);
+  });
+}
+
+
 // eventListener "click" nasluchujacy akcji klikniecia w elementy o id buttons, w tym przypadku w caly div buttonow. przypisuje zmiennej userMove wartosc id klikanego w danym momencie buttona, przypisuje zmiennej computerMove wartosci pozyskane w funkcji 'generateComputerMove', uruchamia funkcje 'compare' dla 'computerMove' i 'userMove', uruchamia fukcje setStats zmieniajac tablice wynikow z kazdym kliknieciem w buttony,sprawdza przy kazdej akcji czy 'limit' jest juz rowny win lub lose(funkcja gameIsOver)
 document.getElementById('buttons').addEventListener('click', function(event) {
   var userMove = event.target.id;
@@ -126,3 +139,5 @@ document.getElementById('buttons').addEventListener('click', function(event) {
   result.innerHTML = "";
   gameResult.innerHTML = "";
 });
+
+
