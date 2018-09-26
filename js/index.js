@@ -1,35 +1,24 @@
 'use strict';
-// var wins = 0;
-// var lose = 0;
-// var draw = 0;
-// var result =  document.getElementById('result');
-// var reset = document.getElementById('reset-scores');
-var gameResult = document.getElementById('gameResult');
-// var params.limit;
 
+var gameResult = document.getElementById('gameResult');
+var numberOfRounds = 0;
 var params = {
   wins: 0,
   lose: 0,
   draw: 0,
   result: document.getElementById('result'),
   reset: document.getElementById('reset-scores'),
-  // gameResult: document.getElementById('gameResult');
-  limit: 0
+  limit: 0,
+  gameProgress: document.getElementById('game-progress'),
 }
 
+
+
+
+// zablokowanie przycisków przy pierwszym załadowaniu gry
 disableButtons(true,'grey');
 
-// var btnPlayerMove = document.querySelectorAll('.player-move'); // ustalam zmienną dla wszystkich elementów, które mają klasę "player-move"
-
-// for (var i = 0; i < btnPlayerMove.length; i++) {
-//   var dataMove = btnPlayerMove[i].getAttribute('data-move'); // tworzę pętlę, która wyciąga z przeszukanych elementów atrybut "data-move"
-  
-//   btnPlayerMove[i].addEventListener('click', function() { // funkcja z argumentem "dataMove"
-//     playerMove(dataMove);
-//   });
-// }
-
-
+// modal z wynikiem gry
 var showModal = function(event){
     if(event){
       event.preventDefault();
@@ -51,16 +40,12 @@ var showModal = function(event){
     }
   };
   
-  // Mimo, że obecnie mamy tylko jeden link, stosujemy kod dla wielu linków. W ten sposób nie będzie trzeba go zmieniać, kiedy zechcemy mieć więcej linków lub guzików otwierających modale
-  
   var modalLinks = document.querySelectorAll('.show-modal');
   
   for(var i = 0; i < modalLinks.length; i++){
     modalLinks[i].addEventListener('click', showModal);
   }
   
-  // Dodajemy też funkcję zamykającą modal, oraz przywiązujemy ją do kliknięć na elemencie z klasą "close". 
-
   var hideModal = function(event){
     event.preventDefault();
     document.querySelector('#modal-overlay').classList.remove('show');
@@ -72,11 +57,7 @@ var showModal = function(event){
     closeButtons[i].addEventListener('click', hideModal);
   }
   
-  // Dobrą praktyką jest również umożliwianie zamykania modala poprzez kliknięcie w overlay. 
-  
   document.querySelector('#modal-overlay').addEventListener('click', hideModal);
-  
-  // Musimy jednak pamiętać, aby zablokować propagację kliknięć z samego modala - inaczej każde kliknięcie wewnątrz modala również zamykałoby go. 
   
   var modals = document.querySelectorAll('.modal');
   
@@ -176,7 +157,6 @@ function gameIsOver(){
   }
 }
 
-
 // funkcja odpowiedzialna za zablokowanie przyciskow o id paper/rock/scissors lub odblokowanie ich w zaleznosci od akcji, zmienia rowniez styl przyciskow w zaleznosci od akcji.
 function disableButtons(flag,bgColor){
   document.getElementById("paper").disabled = flag;
@@ -187,14 +167,15 @@ function disableButtons(flag,bgColor){
   document.getElementById("scissors").style.backgroundColor = bgColor;
 }
 
-
 // eventListener "click" nasluchujacy akcji klikniecia w elementy o id buttons, w tym przypadku w caly div buttonow. przypisuje zmiennej userMove wartosc id klikanego w danym momencie buttona, przypisuje zmiennej computerMove wartosci pozyskane w funkcji 'generateComputerMove', uruchamia funkcje 'compare' dla 'computerMove' i 'userMove', uruchamia fukcje setStats zmieniajac tablice wynikow z kazdym kliknieciem w buttony,sprawdza przy kazdej akcji czy 'params.limit' jest juz rowny win lub lose(funkcja gameIsOver)
 document.getElementById('buttons').addEventListener('click', function(event) {
+  numberOfRounds++;
   var userMove = event.target.id;
   var computerMove = generateComputerMove();
   compare(computerMove,userMove);
   setStats();
   gameIsOver();
+  params.gameProgress.innerHTML = '<li>' + 'round:  ' + numberOfRounds + '<br>' + 'player move:  ' + userMove + '<br>' + 'computer move:  ' + computerMove + '</li>' + '<br>';
 });
 
 // eventListener odpowiedzialny za nasluchiwanie akcji click na buttonie New Game(zmienna result, id gameResult), w pierwszej kolejnosci nadaje zmiennym lose/wins/draw wartosc 0, uruchamia prompta z zapytaniem o ilosc rund w nowej grze, odblokowuje mozliwosc uzywania buttonow paper/rock/scissors i czysci inputy
@@ -208,15 +189,12 @@ document.getElementById('buttons').addEventListener('click', function(event) {
   disableButtons(false,'#02ac46');
   params.result.innerHTML = "";
   gameResult.innerHTML = "";
+  params.gameProgress.innerHTML = "";
+  numberOfRounds = 0;
 });
 
  // _____________________________________________________
 
-
-
-  
-  
-  // Teraz wystarczy napisać funkcję otwierającą modal:
   
   
   
