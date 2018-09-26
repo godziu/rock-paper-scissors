@@ -175,7 +175,11 @@ document.getElementById('buttons').addEventListener('click', function(event) {
   compare(computerMove,userMove);
   setStats();
   gameIsOver();
-  params.gameProgress.innerHTML = '<li>' + 'round:  ' + numberOfRounds + '<br>' + 'player move:  ' + userMove + '<br>' + 'computer move:  ' + computerMove + '</li>' + '<br>';
+  var newLi = document.createElement('LI');
+  newLi.innerHTML = 'round:  ' + numberOfRounds + '<br>' + 'player move:  ' + userMove + '<br>' + 'computer move:  ' + computerMove + '<br>';
+  // var liText = document.createTextNode( 'round:  ' + numberOfRounds + '<br>' + 'player move:  ' + userMove + '<br>' + 'computer move:  ' + computerMove + '<br>');
+  // newLi.appendChild(liText);
+  document.getElementById("game-progress").appendChild(newLi);
 });
 
 // eventListener odpowiedzialny za nasluchiwanie akcji click na buttonie New Game(zmienna result, id gameResult), w pierwszej kolejnosci nadaje zmiennym lose/wins/draw wartosc 0, uruchamia prompta z zapytaniem o ilosc rund w nowej grze, odblokowuje mozliwosc uzywania buttonow paper/rock/scissors i czysci inputy
